@@ -283,7 +283,7 @@ function draw() {
   updateFeathers();
   updateWaxDrops();
 
-  // 9. Intro Cinemática
+  // 9. Intro Cinemática (Solo título e indicaciones)
   drawCinematicPrologue(elapsed);
 
   // 10. Consigna: "¡ES HORA DE VOLAR!"
@@ -326,7 +326,7 @@ function drawPauseOverlay() {
 }
 
 // =========================================================
-// INTRO CINEMÁTICA CON TÍTULO BRILLANTE
+// INTRO CINEMÁTICA SOLO CON TÍTULO
 // =========================================================
 function drawCinematicPrologue(elapsed) {
   if (elapsed >= 0 && elapsed < STORY_DURATION) {
@@ -337,15 +337,7 @@ function drawCinematicPrologue(elapsed) {
     push();
     textAlign(CENTER, CENTER);
 
-    let titleY;
-    if (elapsed < 3800) {
-      titleY = height * 0.5;
-    } else {
-      let tRise = map(elapsed, 3800, 5200, 0, 1, true);
-      tRise = tRise * tRise * (3 - 2 * tRise);
-      titleY = lerp(height * 0.5, height * 0.075, tRise);
-    }
-
+    let titleY = height * 0.5;
     let titleSize = min(width * 0.075, 72);
     textFont('Caesar Dressing', 'serif');
     textSize(titleSize);
@@ -381,58 +373,10 @@ function drawCinematicPrologue(elapsed) {
     drawingContext.globalAlpha = 1.0;
     noStroke();
     drawingContext.shadowBlur = titleGlow;
-    drawingContext.shadowColor = `rgba(255, 215, 140, ${a / 255 * 0.95})`;
+    drawingContext.shadowColor = `rgba(255, 215, 140, ${(a / 255) * 0.95})`;
     fill(255, 248, 235, a);
     text("EL MITO DE ÍCARO Y DÉDALO", width / 2, titleY);
     drawingContext.shadowBlur = 0;
-
-    if (elapsed > 4500) {
-      let contentAlpha = map(elapsed, 4500, 5800, 0, 255, true);
-      let finalContentAlpha = min(contentAlpha, alphaOut);
-      let normA = finalContentAlpha / 255;
-
-      let boxW = min(width * 0.85, 960);
-      let textY1 = height * 0.25; 
-      let textY2 = height * 0.47; 
-
-      stroke(218, 175, 105, finalContentAlpha * 0.45);
-      strokeWeight(1);
-      line(width / 2 - boxW * 0.36, textY1 - 55, width / 2 + boxW * 0.36, textY1 - 55);
-      line(width / 2 - boxW * 0.24, textY2 + 55, width / 2 + boxW * 0.24, textY2 + 55);
-      noStroke();
-
-      textFont('Georgia', 'serif');
-      let baseSize = min(width * 0.024, 22.5);
-      textSize(baseSize);
-      textLeading(baseSize * 1.55);
-      rectMode(CENTER);
-
-      drawingContext.shadowBlur = 18;
-      drawingContext.shadowColor = `rgba(0, 0, 0, ${normA})`;
-
-      fill(242, 239, 232, finalContentAlpha);
-      let storyPart1 = "En la isla de Creta, el rey Minos mandó a construir un laberinto para encerrar al Minotauro. Para guardar sus secretos, encerró a Dédalo y a su hijo Ícaro en lo alto de una torre.";
-      text(storyPart1, width / 2, textY1, boxW, 95);
-
-      fill(250, 222, 165, finalContentAlpha * 0.98);
-      textStyle(ITALIC);
-      let storyPart2 = "Para escapar, Dédalo construyó alas con plumas y cera, pero le advirtió a Ícaro: no vueles cerca del Sol, porque el calor derretirá la cera de tus alas...";
-      text(storyPart2, width / 2, textY2, boxW, 95);
-      textStyle(NORMAL);
-
-      drawingContext.shadowBlur = 0;
-
-      if (minotaurImg && minotaurImg.width > 0) {
-        let mSize = min(width * 0.38, height * 0.40, 320);
-        let mW = mSize;
-        let mH = mSize * (minotaurImg.height / minotaurImg.width);
-
-        drawingContext.globalAlpha = normA * 0.96;
-        imageMode(CENTER);
-        let minotaurY = height - mH * 0.08;
-        image(minotaurImg, width / 2, minotaurY, mW, mH);
-      }
-    }
 
     pop();
   }
@@ -482,7 +426,7 @@ function drawWarningBanner() {
     textSize(titleSize);
 
     drawingContext.shadowBlur = 20;
-    drawingContext.shadowColor = `rgba(10, 30, 60, ${a / 255 * 0.85})`;
+    drawingContext.shadowColor = `rgba(10, 30, 60, ${(a / 255) * 0.85})`;
     fill(255, 250, 240, a);
     noStroke();
     text("ÍCARO ESTÁ VOLANDO MUY ALTO", width / 2, height * 0.24);
@@ -511,7 +455,7 @@ function drawWarningBanner() {
     let pulse = 1 + sin(millis() * 0.006) * 0.03;
 
     drawingContext.shadowBlur = 24;
-    drawingContext.shadowColor = `rgba(180, 50, 10, ${a / 255 * 0.9})`;
+    drawingContext.shadowColor = `rgba(180, 50, 10, ${(a / 255) * 0.9})`;
     fill(255, 240, 215, a);
     noStroke();
 
@@ -546,7 +490,7 @@ function drawWarningBanner() {
     let shakeY = random(-2, 2);
 
     drawingContext.shadowBlur = 28;
-    drawingContext.shadowColor = `rgba(255, 30, 0, ${a / 255 * 0.95})`;
+    drawingContext.shadowColor = `rgba(255, 30, 0, ${(a / 255) * 0.95})`;
     fill(255, 220, 180, a);
     noStroke();
 
@@ -735,7 +679,7 @@ function drawBurningFeatherDecor(x, y, scaleX, alphaVal) {
   // Resplandor de fuego en la pluma
   blendMode(ADD);
   drawingContext.shadowBlur = 24;
-  drawingContext.shadowColor = `rgba(255, 80, 20, ${alphaVal / 255 * 0.9})`;
+  drawingContext.shadowColor = `rgba(255, 80, 20, ${(alphaVal / 255) * 0.9})`;
 
   tint(255, 60, 10, alphaVal * 0.85);
   image(featherImg, 0, 0, pWidth * 1.05, pHeight * 1.05);
@@ -848,7 +792,7 @@ function triggerAndDrawExplosion() {
     noStroke();
 
     drawingContext.shadowBlur = 24;
-    drawingContext.shadowColor = `rgba(0, 0, 0, ${a / 255 * 0.9})`;
+    drawingContext.shadowColor = `rgba(0, 0, 0, ${(a / 255) * 0.9})`;
     fill(255, 230, 195, a);
     text("EL SOL HA CALCINADO LAS ALAS DE ÍCARO", width / 2, height * 0.44);
     drawingContext.shadowBlur = 0;
@@ -899,7 +843,7 @@ function triggerAndDrawExplosion() {
 
       let textGlow = 24 + sin(millis() * 0.005) * 7;
       drawingContext.shadowBlur = textGlow;
-      drawingContext.shadowColor = `rgba(255, 215, 140, ${a / 255 * 0.92})`;
+      drawingContext.shadowColor = `rgba(255, 215, 140, ${(a / 255) * 0.92})`;
       fill(252, 244, 228, a);
 
       let finalQuote = "“Y ahora el cielo guarda por siempre la imagen de un vuelo perfecto y hermoso,\nmientras que la tierra se quedó con el eco de un llanto\nque ninguna de sus invenciones pudo consolar.”";
@@ -936,7 +880,7 @@ function triggerAndDrawExplosion() {
     let titleGlow = 26 + sin(millis() * 0.004) * 9;
     noStroke();
     drawingContext.shadowBlur = titleGlow;
-    drawingContext.shadowColor = `rgba(255, 195, 100, ${a / 255 * 0.95})`;
+    drawingContext.shadowColor = `rgba(255, 195, 100, ${(a / 255) * 0.95})`;
     fill(255, 246, 230, a);
     text("EL MITO DE ÍCARO Y DÉDALO", width / 2, titleY);
     drawingContext.shadowBlur = 0;
